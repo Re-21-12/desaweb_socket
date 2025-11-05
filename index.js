@@ -34,11 +34,11 @@ io.on("connection", (socket) => {
 
 
 app.post("/emit", (req, res) => {
-    const { channel, data } = req.body;
-    console.log(`Recibido evento ${channel} con datos:`, data);
+    const { typeEvent, data } = req.body;
+    console.log(`Recibido evento ${typeEvent} con datos:`, data);
     try {
-        io.emit(channel, data);
-        res.json({ status: "Evento emitido", channel });
+        io.emit(typeEvent, data);
+        res.json({ status: "Evento emitido", typeEvent });
     } catch (error) {
         console.error("Error al emitir evento:", error);
         res.status(500).json({ status: "Error al emitir evento", error: error.message });
