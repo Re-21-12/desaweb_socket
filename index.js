@@ -4,51 +4,50 @@ import { Server } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
 
-
 dotenv.config();
 
 const app = express();
 
-
-app.use(cors({
-    origin: process.env.CORS_ORIGIN || "*"
-}));
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "*",
+  })
+);
 
 app.use(express.json());
 
 const server = createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: process.env.CORS_ORIGIN || "*",
-    },
+  cors: {
+    origin: process.env.CORS_ORIGIN || "*",
+  },
 });
 
-
+//a
 io.on("connection", (socket) => {
-    console.log("Cliente conectado:", socket.id);
+  console.log("Cliente conectado:", socket.id);
 
-    socket.on("disconnect", () => {
-        console.log("Cliente desconectado:", socket.id);
-    });
+  socket.on("disconnect", () => {
+    console.log("Cliente desconectado:", socket.id);
+  });
 });
-
 
 app.post("/emit", (req, res) => {
-    const { typeEvent, data } = req.body;
-    console.log(`Recibido evento ${typeEvent} con datos:`, data);
-    try {
-        io.emit(typeEvent, data);
-        res.json({ status: "Evento emitido", typeEvent });
-    } catch (error) {
-        console.error("Error al emitir evento:", error);
-        res.status(500).json({ status: "Error al emitir evento", error: error.message });
-    }
+  const { typeEvent, data } = req.body;
+  console.log(`Recibido evento ${typeEvent} con datos:`, data);
+  try {
+    io.emit(typeEvent, data);
+    res.json({ status: "Evento emitido", typeEvent });
+  } catch (error) {
+    console.error("Error al emitir evento:", error);
+    res
+      .status(500)
+      .json({ status: "Error al emitir evento", error: error.message });
+  }
 });
-
-
 
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 server.listen(3000, () => {
-    console.log(`Socket.IO server corriendo en puerto 3000 (${NODE_ENV})`);
+  console.log(`Socket.IO server corriendo en puerto 3000 (${NODE_ENV})`);
 });
