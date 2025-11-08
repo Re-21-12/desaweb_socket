@@ -48,6 +48,6 @@ app.post("/emit", (req, res) => {
 
 const NODE_ENV = process.env.NODE_ENV || "development";
 
-server.listen(3000, () => {
+server.listen(443, () => {
   console.log(`Socket.IO server corriendo en puerto 3000 (${NODE_ENV})`);
 });
